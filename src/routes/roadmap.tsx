@@ -35,7 +35,7 @@ function Roadmap() {
     if (!t.done) toast.success("Task complete — progress updated");
   };
   const save = (t: Task) => {
-    if (!t.title.trim()) return toast.error("Task needs a title");
+    if (!t.title.trim()) { toast.error("Task needs a title"); return; }
     update((s) => ({ ...s, tasks: s.tasks.some((x) => x.id === t.id) ? s.tasks.map((x) => x.id === t.id ? t : x) : [...s.tasks, t] }), `Saved task “${t.title}”`);
     setEdit(null); toast.success("Task saved");
   };
