@@ -23,8 +23,8 @@ function ProfilePage() {
   const [p, setP] = useState<Profile>(state.profile!);
   useEffect(() => setP(state.profile!), [state.profile]);
   const save = () => {
-    if (!p.interests.length) return toast.error("Pick at least one interest");
-    if (!p.goal.trim()) return toast.error("Goal can't be empty");
+    if (!p.interests.length) { toast.error("Pick at least one interest"); return; }
+    if (!p.goal.trim()) { toast.error("Goal can't be empty"); return; }
     update((s) => ({ ...s, profile: p }), "Updated profile");
     toast.success("Profile saved");
   };
@@ -48,7 +48,7 @@ function ProfilePage() {
             <div className="flex flex-wrap gap-2">{INTERESTS.map((i) => <Chip key={i} active={p.interests.includes(i)} onClick={() => setP({ ...p, interests: p.interests.includes(i) ? p.interests.filter((x) => x !== i) : [...p.interests, i] })}>{i}</Chip>)}</div></div>
           <div className="space-y-2"><Label htmlFor="pgoal">Learning goal</Label><Textarea id="pgoal" value={p.goal} onChange={(e) => setP({ ...p, goal: e.target.value })} /></div>
           <div className="space-y-3"><Label>Study time per day: <span className="text-primary">{p.studyHours} h</span></Label>
-            <Slider min={0.5} max={6} step={0.5} value={[p.studyHours]} onValueChange={([v]) => setP({ ...p, studyHours: v })} aria-label="Study hours per day" /></div>
+            <Slider min={0.5} max={6} step={0.5} value={[p.studyHours]} onValueChange={([v]) => setP({ ...p, studyHours: v ?? 2 })} aria-label="Study hours per day" /></div>
           <Button onClick={save}>Save changes</Button>
         </Panel>
         <Panel className="flex gap-3 lg:col-span-2">

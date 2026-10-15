@@ -29,13 +29,13 @@ function Onboarding() {
   const [step, setStep] = useState(0);
   const [p, setP] = useState<Profile>(state.profile ?? blank);
   const [subjects, setSubjects] = useState<Subject[]>(state.subjects.length ? state.subjects : [{ id: uid(), name: "", topics: [{ id: uid(), name: "", score: null }] }]);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Errs>({});
   const set = <K extends keyof Profile>(k: K, v: Profile[K]) => setP((x) => ({ ...x, [k]: v }));
   const toggle = (k: "interests" | "strengths", v: string) =>
     set(k, p[k].includes(v) ? p[k].filter((x) => x !== v) : [...p[k], v]);
 
   const validate = () => {
-    const e: Record<string, string> = {};
+    const e: Errs = {};
     if (step === 0) {
       if (!p.name.trim()) e.name = "Please enter your name";
       if (!p.branch.trim()) e.branch = "Please enter your branch";
@@ -146,7 +146,7 @@ function Onboarding() {
           </div>
           <div className="space-y-3">
             <Label>Study time per day: <span className="text-primary">{p.studyHours} h</span></Label>
-            <Slider min={0.5} max={6} step={0.5} value={[p.studyHours]} onValueChange={([v]) => set("studyHours", v)} aria-label="Study hours per day" />
+            <Slider min={0.5} max={6} step={0.5} value={[p.studyHours]} onValueChange={([v]) => set("studyHours", v ?? 2)} aria-label="Study hours per day" />
           </div>
           <Field label="Short-term learning goal" error={errors.goal}>
             <Textarea id="goal" placeholder="e.g. Score 70%+ in Signals by end of semester" value={p.goal} onChange={(e) => set("goal", e.target.value)} />
@@ -164,7 +164,9 @@ function Onboarding() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+type Errs = Partial<Record<"name" | "branch" | "year" | "cgpa" | "scores" | "interests" | "goal", string>>;
+
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
   const id = (children as React.ReactElement<{ id?: string }>).props.id;
   return (
     <div className="space-y-2">

@@ -28,8 +28,8 @@ function WeakTopics() {
   const add = (e: React.FormEvent) => {
     e.preventDefault();
     const n = score === "" ? null : Number(score);
-    if (!subject.trim() || !topic.trim()) return toast.error("Enter a subject and topic");
-    if (n !== null && (n < 0 || n > 100)) return toast.error("Score must be 0–100");
+    if (!subject.trim() || !topic.trim()) { toast.error("Enter a subject and topic"); return; }
+    if (n !== null && (n < 0 || n > 100)) { toast.error("Score must be 0–100"); return; }
     update((s) => {
       const ex = s.subjects.find((x) => x.name.toLowerCase() === subject.trim().toLowerCase());
       const t = { id: uid(), name: topic.trim(), score: n };

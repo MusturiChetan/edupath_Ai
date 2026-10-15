@@ -204,7 +204,7 @@ export function generateTasks(profile: Profile, subjects: Subject[]): Task[] {
       });
     }
     if (top) {
-      const step = top.roadmap[d % top.roadmap.length];
+      const step = top.roadmap[d % top.roadmap.length] ?? top.title;
       tasks.push({
         id: uid(), day: d, title: step, topic: top.title,
         minutes: Math.round(daily * (w ? 0.4 : 1)), priority: d === 6 ? "Low" : "Medium",
@@ -239,7 +239,7 @@ export async function guidanceReply(q: string, s: State): Promise<string> {
   const weak = weakTopics(s.subjects);
   const top = matchCareers(s.profile, s.subjects).slice(0, 3);
   if (t.includes("embedded")) {
-    const c = CAREERS[0];
+    const c = CAREERS[0]!;
     return `Beginner embedded roadmap:\n${c.roadmap.map((r, i) => `${i + 1}. ${r}`).join("\n")}\n\nStarter project: ${c.project}`;
   }
   if (t.includes("weak") || t.includes("improve")) {
