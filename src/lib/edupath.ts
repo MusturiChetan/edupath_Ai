@@ -38,12 +38,28 @@ export const uid = () => Math.random().toString(36).slice(2, 10);
 export const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export const INTERESTS = [
-  "Electronics", "Programming", "Data", "Design", "Hardware", "Research",
-  "Mathematics", "Networking", "AI / ML", "Web", "Robotics", "Writing",
+  "Electronics",
+  "Programming",
+  "Data",
+  "Design",
+  "Hardware",
+  "Research",
+  "Mathematics",
+  "Networking",
+  "AI / ML",
+  "Web",
+  "Robotics",
+  "Writing",
 ];
 export const STRENGTHS = [
-  "Problem solving", "Logical thinking", "Creativity", "Communication",
-  "Attention to detail", "Hands-on building", "Analysis", "Self-learning",
+  "Problem solving",
+  "Logical thinking",
+  "Creativity",
+  "Communication",
+  "Attention to detail",
+  "Hands-on building",
+  "Analysis",
+  "Self-learning",
 ];
 
 export type Career = {
@@ -61,29 +77,46 @@ export type Career = {
 
 export const CAREERS: Career[] = [
   {
-    id: "embedded", title: "Embedded Systems Engineer",
-    overview: "Design firmware and low-level software that runs on microcontrollers inside devices.",
+    id: "embedded",
+    title: "Embedded Systems Engineer",
+    overview:
+      "Design firmware and low-level software that runs on microcontrollers inside devices.",
     tags: ["Electronics", "Hardware", "Programming", "Robotics"],
     strengthTags: ["Hands-on building", "Attention to detail", "Logical thinking"],
     subjectKeywords: ["microcontroller", "digital", "c programming", "electronics", "signals"],
     skills: ["C / C++", "Digital electronics", "Microcontrollers"],
     next: ["RTOS basics", "UART / SPI / I2C", "Debugging with a logic analyzer"],
     project: "Temperature logger on an Arduino or STM32 that writes readings to an SD card.",
-    roadmap: ["Embedded C refresh", "GPIO & timers", "Serial protocols", "Interrupts", "Mini RTOS project"],
+    roadmap: [
+      "Embedded C refresh",
+      "GPIO & timers",
+      "Serial protocols",
+      "Interrupts",
+      "Mini RTOS project",
+    ],
   },
   {
-    id: "iot", title: "IoT Engineer",
-    overview: "Connect sensors and devices to the cloud and build systems that collect and act on data.",
+    id: "iot",
+    title: "IoT Engineer",
+    overview:
+      "Connect sensors and devices to the cloud and build systems that collect and act on data.",
     tags: ["Electronics", "Networking", "Programming", "Hardware"],
     strengthTags: ["Hands-on building", "Problem solving"],
     subjectKeywords: ["network", "microcontroller", "sensor", "communication"],
     skills: ["Sensors", "Networking basics", "Python or C"],
     next: ["MQTT", "ESP32 Wi-Fi", "Simple cloud dashboards"],
     project: "ESP32 room monitor publishing temperature and humidity over MQTT to a web dashboard.",
-    roadmap: ["Sensor interfacing", "ESP32 setup", "MQTT messaging", "Dashboard", "Power optimisation"],
+    roadmap: [
+      "Sensor interfacing",
+      "ESP32 setup",
+      "MQTT messaging",
+      "Dashboard",
+      "Power optimisation",
+    ],
   },
   {
-    id: "software", title: "Software Developer",
+    id: "software",
+    title: "Software Developer",
     overview: "Build applications and services, working with code, version control and teams.",
     tags: ["Programming", "Web", "Mathematics"],
     strengthTags: ["Problem solving", "Logical thinking", "Self-learning"],
@@ -91,10 +124,17 @@ export const CAREERS: Career[] = [
     skills: ["One programming language", "Data structures", "Git"],
     next: ["Algorithms practice", "A web framework", "Testing basics"],
     project: "A personal task tracker web app with login-free local storage and filters.",
-    roadmap: ["DSA fundamentals", "Git workflow", "Build a CRUD app", "Write tests", "Deploy a project"],
+    roadmap: [
+      "DSA fundamentals",
+      "Git workflow",
+      "Build a CRUD app",
+      "Write tests",
+      "Deploy a project",
+    ],
   },
   {
-    id: "data", title: "Data Analyst",
+    id: "data",
+    title: "Data Analyst",
     overview: "Turn raw data into insights using spreadsheets, SQL, statistics and visualisation.",
     tags: ["Data", "Mathematics", "AI / ML"],
     strengthTags: ["Analysis", "Attention to detail", "Communication"],
@@ -105,7 +145,8 @@ export const CAREERS: Career[] = [
     roadmap: ["Statistics refresh", "SQL basics", "pandas", "Visualisation", "Portfolio report"],
   },
   {
-    id: "uiux", title: "UI/UX Designer",
+    id: "uiux",
+    title: "UI/UX Designer",
     overview: "Research user needs and design clear, usable interfaces for digital products.",
     tags: ["Design", "Web", "Writing"],
     strengthTags: ["Creativity", "Communication", "Attention to detail"],
@@ -116,7 +157,8 @@ export const CAREERS: Career[] = [
     roadmap: ["Design principles", "Figma basics", "User research", "Prototyping", "Case study"],
   },
   {
-    id: "research", title: "Research / Higher Studies",
+    id: "research",
+    title: "Research / Higher Studies",
     overview: "Pursue an MTech, MS or PhD path and contribute to deep technical problems.",
     tags: ["Research", "Mathematics", "AI / ML", "Writing"],
     strengthTags: ["Analysis", "Self-learning", "Logical thinking"],
@@ -124,10 +166,17 @@ export const CAREERS: Career[] = [
     skills: ["Strong fundamentals", "Reading papers"],
     next: ["Entrance exam syllabus", "Technical writing", "A small literature review"],
     project: "Replicate one result from a published paper in your field and write it up.",
-    roadmap: ["Core subject revision", "Exam practice", "Read 3 papers", "Mini replication", "Write report"],
+    roadmap: [
+      "Core subject revision",
+      "Exam practice",
+      "Read 3 papers",
+      "Mini replication",
+      "Write report",
+    ],
   },
   {
-    id: "ml", title: "Machine Learning Engineer",
+    id: "ml",
+    title: "Machine Learning Engineer",
     overview: "Build and deploy models that learn from data to make predictions.",
     tags: ["AI / ML", "Data", "Programming", "Mathematics"],
     strengthTags: ["Analysis", "Problem solving", "Self-learning"],
@@ -136,6 +185,43 @@ export const CAREERS: Career[] = [
     next: ["scikit-learn", "Model evaluation", "Data cleaning"],
     project: "Train a simple classifier on a public dataset and explain its mistakes.",
     roadmap: ["Math for ML", "Python & numpy", "Classic models", "Evaluation", "Mini project"],
+  },
+  {
+    id: "cloud",
+    title: "Cloud & DevOps Engineer",
+    overview: "Deploy, automate, and maintain reliable infrastructure and cloud services.",
+    tags: ["Networking", "Programming", "Web", "Hardware"],
+    strengthTags: ["Problem solving", "Logical thinking", "Attention to detail"],
+    subjectKeywords: ["network", "operating systems", "cloud", "database"],
+    skills: ["Linux fundamentals", "Docker", "CI/CD basics"],
+    next: ["Kubernetes", "Terraform / IaC", "Cloud Provider (GCP/AWS)"],
+    project: "Containerize a web app with Docker and set up automated GitHub Actions deployment.",
+    roadmap: [
+      "Linux & Shell scripting",
+      "Docker containers",
+      "CI/CD pipelines",
+      "Cloud infrastructure",
+      "Monitoring & logging",
+    ],
+  },
+  {
+    id: "cybersecurity",
+    title: "Cybersecurity Analyst",
+    overview:
+      "Protect networks, systems, and data against security vulnerabilities and cyber threats.",
+    tags: ["Networking", "Programming", "Research"],
+    strengthTags: ["Attention to detail", "Analysis", "Problem solving"],
+    subjectKeywords: ["network", "cryptography", "security", "operating systems"],
+    skills: ["Networking protocols", "Security principles", "Scripting"],
+    next: ["Vulnerability assessment", "Wireshark traffic analysis", "Ethical hacking basics"],
+    project: "Set up a home lab to capture and analyze network packets with Wireshark.",
+    roadmap: [
+      "Network fundamentals",
+      "Security concepts",
+      "Packet analysis",
+      "Vulnerability scanning",
+      "Incident response",
+    ],
   },
 ];
 
@@ -148,7 +234,10 @@ export function topicStatus(score: number | null): TopicStatus {
   return "strong";
 }
 export const STATUS_LABEL: Record<TopicStatus, string> = {
-  attention: "Needs attention", review: "Review", strong: "Strong", nodata: "No data yet",
+  attention: "Needs attention",
+  review: "Review",
+  strong: "Strong",
+  nodata: "No data yet",
 };
 
 export function subjectAverage(s: Subject): number | null {
@@ -172,16 +261,32 @@ export function matchCareers(profile: Profile | null, subjects: Subject[]): Care
     let points = 0;
     if (profile) {
       const i = career.tags.filter((t) => profile.interests.includes(t));
-      if (i.length) { points += i.length * 2; reasons.push(`You're interested in ${i.join(", ")}`); }
+      if (i.length) {
+        points += i.length * 2;
+        reasons.push(`You're interested in ${i.join(", ")}`);
+      }
       const s = career.strengthTags.filter((t) => profile.strengths.includes(t));
-      if (s.length) { points += s.length; reasons.push(`Uses your strengths: ${s.join(", ")}`); }
-      if (profile.career === career.id) { points += 3; reasons.push("Matches your preferred direction"); }
+      if (s.length) {
+        points += s.length;
+        reasons.push(`Uses your strengths: ${s.join(", ")}`);
+      }
+      if (profile.career === career.id) {
+        points += 3;
+        reasons.push("Matches your preferred direction");
+      }
     }
     const strong = subjects.filter((sub) => {
       const avg = subjectAverage(sub);
-      return avg !== null && avg >= 70 && career.subjectKeywords.some((k) => sub.name.toLowerCase().includes(k));
+      return (
+        avg !== null &&
+        avg >= 70 &&
+        career.subjectKeywords.some((k) => sub.name.toLowerCase().includes(k))
+      );
     });
-    if (strong.length) { points += strong.length; reasons.push(`Good scores in ${strong.map((x) => x.name).join(", ")}`); }
+    if (strong.length) {
+      points += strong.length;
+      reasons.push(`Good scores in ${strong.map((x) => x.name).join(", ")}`);
+    }
     return { career, points, reasons };
   }).sort((a, b) => b.points - a.points);
 }
@@ -196,19 +301,27 @@ export function generateTasks(profile: Profile, subjects: Subject[]): Task[] {
     if (w) {
       const attention = topicStatus(w.score) === "attention";
       tasks.push({
-        id: uid(), day: d,
+        id: uid(),
+        day: d,
         title: attention ? `Rebuild basics: ${w.name}` : `Practice problems: ${w.name}`,
         topic: `${w.subject} · ${w.name}`,
-        minutes: Math.round(daily * 0.6), priority: attention ? "High" : "Medium",
-        skill: `Closes a gap in ${w.subject} (scored ${w.score}%)`, done: false,
+        minutes: Math.round(daily * 0.6),
+        priority: attention ? "High" : "Medium",
+        skill: `Closes a gap in ${w.subject} (scored ${w.score}%)`,
+        done: false,
       });
     }
     if (top) {
       const step = top.roadmap[d % top.roadmap.length] ?? top.title;
       tasks.push({
-        id: uid(), day: d, title: step, topic: top.title,
-        minutes: Math.round(daily * (w ? 0.4 : 1)), priority: d === 6 ? "Low" : "Medium",
-        skill: `Builds toward ${top.title}`, done: false,
+        id: uid(),
+        day: d,
+        title: step,
+        topic: top.title,
+        minutes: Math.round(daily * (w ? 0.4 : 1)),
+        priority: d === 6 ? "Low" : "Medium",
+        skill: `Builds toward ${top.title}`,
+        done: false,
       });
     }
   }
@@ -216,21 +329,53 @@ export function generateTasks(profile: Profile, subjects: Subject[]): Task[] {
 }
 
 export const DEMO_PROFILE: Profile = {
-  name: "Aarav (demo)", course: "BTech", branch: "Electronics & Communication", year: "3rd year · Sem 5",
-  cgpa: 7.4, interests: ["Electronics", "Programming", "Hardware"],
-  strengths: ["Hands-on building", "Logical thinking"], career: "embedded", studyHours: 2,
+  name: "Aarav (demo)",
+  course: "BTech",
+  branch: "Electronics & Communication",
+  year: "3rd year · Sem 5",
+  cgpa: 7.4,
+  interests: ["Electronics", "Programming", "Hardware"],
+  strengths: ["Hands-on building", "Logical thinking"],
+  career: "embedded",
+  studyHours: 2,
   goal: "Get comfortable with microcontroller programming before my internship.",
 };
 export const DEMO_SUBJECTS: Subject[] = [
-  { id: uid(), name: "Microcontrollers", topics: [
-    { id: uid(), name: "Interrupts", score: 42 }, { id: uid(), name: "Timers", score: 58 }, { id: uid(), name: "GPIO", score: 81 } ] },
-  { id: uid(), name: "Signals & Systems", topics: [
-    { id: uid(), name: "Fourier transform", score: 47 }, { id: uid(), name: "Convolution", score: 66 }, { id: uid(), name: "Z-transform", score: null } ] },
-  { id: uid(), name: "C Programming", topics: [
-    { id: uid(), name: "Pointers", score: 61 }, { id: uid(), name: "Structs", score: 78 } ] },
+  {
+    id: uid(),
+    name: "Microcontrollers",
+    topics: [
+      { id: uid(), name: "Interrupts", score: 42 },
+      { id: uid(), name: "Timers", score: 58 },
+      { id: uid(), name: "GPIO", score: 81 },
+    ],
+  },
+  {
+    id: uid(),
+    name: "Signals & Systems",
+    topics: [
+      { id: uid(), name: "Fourier transform", score: 47 },
+      { id: uid(), name: "Convolution", score: 66 },
+      { id: uid(), name: "Z-transform", score: null },
+    ],
+  },
+  {
+    id: uid(),
+    name: "C Programming",
+    topics: [
+      { id: uid(), name: "Pointers", score: 61 },
+      { id: uid(), name: "Structs", score: 78 },
+    ],
+  },
 ];
 
-export const EMPTY_STATE: State = { profile: null, subjects: [], tasks: [], activity: [], chat: [] };
+export const EMPTY_STATE: State = {
+  profile: null,
+  subjects: [],
+  tasks: [],
+  activity: [],
+  chat: [],
+};
 
 // Rule-based guidance responder. Replace with an API call later (same signature).
 export async function guidanceReply(q: string, s: State): Promise<string> {
@@ -243,17 +388,30 @@ export async function guidanceReply(q: string, s: State): Promise<string> {
     return `Beginner embedded roadmap:\n${c.roadmap.map((r, i) => `${i + 1}. ${r}`).join("\n")}\n\nStarter project: ${c.project}`;
   }
   if (t.includes("weak") || t.includes("improve")) {
-    if (!weak.length) return "I don't see any topics under 70% yet. Add topic scores on the Weak Topics page and I'll suggest revision steps.";
-    return `Your lowest topics right now:\n${weak.slice(0, 3).map((w) => `• ${w.name} (${w.subject}) — ${w.score}%`).join("\n")}\n\nTry: re-read the basics for 20 minutes, solve 5 graded problems, then explain it out loud in your own words. Re-test after 3 days.`;
+    if (!weak.length)
+      return "I don't see any topics under 70% yet. Add topic scores on the Weak Topics page and I'll suggest revision steps.";
+    return `Your lowest topics right now:\n${weak
+      .slice(0, 3)
+      .map((w) => `• ${w.name} (${w.subject}) — ${w.score}%`)
+      .join(
+        "\n",
+      )}\n\nTry: re-read the basics for 20 minutes, solve 5 graded problems, then explain it out loud in your own words. Re-test after 3 days.`;
   }
   if (t.includes("career") || t.includes("suit")) {
-    if (!s.profile) return "Complete onboarding first so I can compare careers against your interests.";
+    if (!s.profile)
+      return "Complete onboarding first so I can compare careers against your interests.";
     return `Based on the matching rules (interests, strengths, preferred direction):\n${top.map((m) => `• ${m.career.title} — ${m.points} pts`).join("\n")}\n\nThese are suggestions to explore, not guarantees.`;
   }
   if (t.includes("week") || t.includes("next") || t.includes("study")) {
     const pending = s.tasks.filter((x) => !x.done);
-    if (!pending.length) return s.tasks.length ? "You've completed every task this week. Regenerate your roadmap from the Roadmap page." : "You don't have a roadmap yet. Generate one from onboarding or the Roadmap page.";
-    return `Next up:\n${pending.slice(0, 3).map((p) => `• ${DAYS[p.day]}: ${p.title} (${p.minutes} min)`).join("\n")}`;
+    if (!pending.length)
+      return s.tasks.length
+        ? "You've completed every task this week. Regenerate your roadmap from the Roadmap page."
+        : "You don't have a roadmap yet. Generate one from onboarding or the Roadmap page.";
+    return `Next up:\n${pending
+      .slice(0, 3)
+      .map((p) => `• ${DAYS[p.day]}: ${p.title} (${p.minutes} min)`)
+      .join("\n")}`;
   }
   return "I can help with: what to study next, improving weak topics, which careers fit your interests, or a beginner embedded systems roadmap. Try one of the suggestions below.";
 }

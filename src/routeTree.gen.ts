@@ -13,8 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AskRouteImport } from './routes/ask'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as WeakTopicsRouteImport } from './routes/weak-topics'
 
@@ -38,6 +41,16 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -46,6 +59,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoadmapRoute = RoadmapRouteImport.update({
@@ -64,8 +82,11 @@ export interface FileRoutesByFullPath {
   '/ask': typeof AskRoute
   '/careers': typeof CareersRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/weak-topics': typeof WeakTopicsRoute
 }
@@ -74,8 +95,11 @@ export interface FileRoutesByTo {
   '/ask': typeof AskRoute
   '/careers': typeof CareersRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/weak-topics': typeof WeakTopicsRoute
 }
@@ -85,8 +109,11 @@ export interface FileRoutesById {
   '/ask': typeof AskRoute
   '/careers': typeof CareersRoute
   '/dashboard': typeof DashboardRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/weak-topics': typeof WeakTopicsRoute
 }
@@ -97,8 +124,11 @@ export interface FileRouteTypes {
     | '/ask'
     | '/careers'
     | '/dashboard'
+    | '/forgot-password'
+    | '/login'
     | '/onboarding'
     | '/profile'
+    | '/register'
     | '/roadmap'
     | '/weak-topics'
   fileRoutesByTo: FileRoutesByTo
@@ -107,8 +137,11 @@ export interface FileRouteTypes {
     | '/ask'
     | '/careers'
     | '/dashboard'
+    | '/forgot-password'
+    | '/login'
     | '/onboarding'
     | '/profile'
+    | '/register'
     | '/roadmap'
     | '/weak-topics'
   id:
@@ -117,8 +150,11 @@ export interface FileRouteTypes {
     | '/ask'
     | '/careers'
     | '/dashboard'
+    | '/forgot-password'
+    | '/login'
     | '/onboarding'
     | '/profile'
+    | '/register'
     | '/roadmap'
     | '/weak-topics'
   fileRoutesById: FileRoutesById
@@ -128,8 +164,11 @@ export interface RootRouteChildren {
   AskRoute: typeof AskRoute
   CareersRoute: typeof CareersRoute
   DashboardRoute: typeof DashboardRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
   ProfileRoute: typeof ProfileRoute
+  RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
   WeakTopicsRoute: typeof WeakTopicsRoute
 }
@@ -164,6 +203,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -176,6 +229,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/roadmap': {
@@ -200,8 +260,11 @@ const rootRouteChildren: RootRouteChildren = {
   AskRoute: AskRoute,
   CareersRoute: CareersRoute,
   DashboardRoute: DashboardRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
   ProfileRoute: ProfileRoute,
+  RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,
   WeakTopicsRoute: WeakTopicsRoute,
 }
