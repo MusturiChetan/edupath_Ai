@@ -28,6 +28,10 @@ import { Logo } from "@/components/edu";
 import { useAuth } from "@/lib/auth";
 import { meta } from "@/lib/meta";
 
+type RegisterErrorField =
+  "fullName" | "email" | "password" | "confirmPassword" | "branch" | "year" | "form";
+type RegisterErrors = Partial<Record<RegisterErrorField, string>>;
+
 export const Route = createFileRoute("/register")({
   head: () =>
     meta(
@@ -50,10 +54,10 @@ function RegisterPage() {
   const [year, setYear] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<RegisterErrors>({});
 
   const validate = () => {
-    const errs: Record<string, string> = {};
+    const errs: RegisterErrors = {};
 
     if (!fullName.trim()) errs.fullName = "Full name is required.";
 
@@ -129,9 +133,9 @@ function RegisterPage() {
 
           <div className="space-y-3 pt-2">
             {[
-              "Encrypted, isolated student data storage",
+              "Student learning data saved in this browser",
               "Connect academic performance to real career skills",
-              "Save and track progress across any device",
+              "Save and track progress by student account",
             ].map((feature, i) => (
               <div key={i} className="flex items-center gap-3 text-sm text-primary-foreground/90">
                 <CheckCircle2 className="size-4 shrink-0 text-cyan" />
@@ -152,7 +156,7 @@ function RegisterPage() {
         <div className="relative z-10 flex items-center justify-between text-xs text-primary-foreground/70 border-t border-primary-foreground/15 pt-6">
           <span>© 2026 EduPath AI</span>
           <span className="flex items-center gap-1.5">
-            <ShieldCheck className="size-4 text-cyan" /> Secure WebCrypto PBKDF2
+            <ShieldCheck className="size-4 text-cyan" /> Local password hashing uses PBKDF2
           </span>
         </div>
       </div>
@@ -171,7 +175,7 @@ function RegisterPage() {
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link to="/login" className="font-medium text-primary hover:underline">
+              <Link to="/login" search={{}} className="font-medium text-primary hover:underline">
                 Sign in
               </Link>
             </p>

@@ -82,7 +82,7 @@ function ProfilePage() {
   const handleLogout = async () => {
     await logout();
     toast.success("Signed out successfully.");
-    nav({ to: "/login" });
+    nav({ to: "/login", search: {} });
   };
 
   return (
@@ -157,17 +157,18 @@ function ProfilePage() {
               {isCloudBackend ? (
                 <>
                   <Cloud className="size-3.5 text-cyan" />
-                  <span>Cloud Storage Mode (Supabase)</span>
+                  <span>Supabase Auth · Local Learning Data</span>
                 </>
               ) : (
                 <>
                   <ShieldCheck className="size-3.5 text-primary" />
-                  <span>Client-Side Cryptographic Sandbox</span>
+                  <span>Local Demo Account</span>
                 </>
               )}
             </div>
-            Data is strictly isolated per student ID (
-            <b>{user?.id ? user.id.slice(0, 12) + "…" : "Local"}</b>).
+            Learning data is saved in this browser under student account key (
+            <b>{user?.id ? user.id.slice(0, 12) + "…" : "Local"}</b>). Profile data is not
+            encrypted.
           </div>
         </Panel>
 

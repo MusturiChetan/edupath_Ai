@@ -23,6 +23,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const [state, setState] = useState<State>(EMPTY_STATE);
   const [ready, setReady] = useState(false);
+  const [loadedStorageKey, setLoadedStorageKey] = useState<string | null>(null);
 
   // User-isolated storage key
   const storageKey = user ? `edupath_student_${user.id}_v2` : "edupath_guest_v2";
@@ -32,6 +33,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setReady(false);
     if (!user) {
       setState(EMPTY_STATE);
+      setLoadedStorageKey(storageKey);
       setReady(true);
       return;
     }
@@ -63,16 +65,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       console.error("Failed to parse student data from storage:", e);
       setState(EMPTY_STATE);
     } finally {
+      setLoadedStorageKey(storageKey);
       setReady(true);
     }
   }, [user, storageKey]);
 
   // Persist user data on updates
   useEffect(() => {
-    if (ready && user) {
+    if (ready && user && loadedStorageKey === storageKey) {
       localStorage.setItem(storageKey, JSON.stringify(state));
     }
-  }, [state, ready, user, storageKey]);
+  }, [state, ready, user, storageKey, loadedStorageKey]);
 
   const update: Ctx["update"] = (fn, activity) => {
     setState((s) => {

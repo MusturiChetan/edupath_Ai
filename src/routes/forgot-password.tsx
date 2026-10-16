@@ -18,18 +18,22 @@ export const Route = createFileRoute("/forgot-password")({
 });
 
 function ForgotPasswordPage() {
-  const { resetPassword } = useAuth();
+  const { resetPassword, isCloudBackend } = useAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [resultMessage, setResultMessage] = useState("");
+  const [requestSucceeded, setRequestSucceeded] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
 
     setLoading(true);
-    await resetPassword(email);
+    const result = await resetPassword(email);
     setLoading(false);
+    setResultMessage(result.message);
+    setRequestSucceeded(result.success);
     setSubmitted(true);
   };
 
@@ -44,23 +48,24 @@ function ForgotPasswordPage() {
             Password Recovery
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Enter your registered email address and we'll send you secure recovery instructions.
+            {isCloudBackend
+              ? "Enter your registered email address to request recovery instructions."
+              : "Password recovery is available only when an account provider is configured."}
           </p>
         </div>
 
         {submitted ? (
           <div className="space-y-6">
             <div className="rounded-xl border border-success/30 bg-success/10 p-5 text-center">
-              <CheckCircle2 className="mx-auto size-8 text-success mb-2" />
-              <p className="text-sm font-semibold text-foreground">Recovery Request Dispatched</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                If an account matches <b>{email}</b>, password recovery instructions have been
-                prepared. Please check your inbox and spam folder.
+              {requestSucceeded && <CheckCircle2 className="mx-auto size-8 text-success mb-2" />}
+              <p className="text-sm font-semibold text-foreground">
+                {requestSucceeded ? "Recovery Request Sent" : "Password Reset Unavailable"}
               </p>
+              <p className="mt-1 text-xs text-muted-foreground">{resultMessage}</p>
             </div>
 
             <Button asChild variant="outline" className="w-full">
-              <Link to="/login">
+              <Link to="/login" search={{}}>
                 <ArrowLeft className="size-4 mr-2" /> Back to sign in
               </Link>
             </Button>
@@ -90,6 +95,7 @@ function ForgotPasswordPage() {
             <div className="flex items-center justify-center pt-2">
               <Link
                 to="/login"
+                search={{}}
                 className="inline-flex items-center text-xs font-medium text-primary hover:underline"
               >
                 <ArrowLeft className="size-3.5 mr-1" /> Return to login

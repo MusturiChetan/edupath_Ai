@@ -79,7 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const handleLogout = async () => {
     await logout();
     toast.success("Signed out successfully.");
-    navigate({ to: "/login" });
+    navigate({ to: "/login", search: {} });
   };
 
   const handleLoadDemo = () => {
@@ -123,16 +123,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                 {isCloudBackend ? (
                   <>
                     <Cloud className="size-3 text-cyan" />
-                    <span>Supabase Cloud DB</span>
+                    <span>Supabase Auth · Local Learning Data</span>
                   </>
                 ) : (
                   <>
                     <ShieldCheck className="size-3 text-cyan" />
-                    <span>Local WebCrypto Sandbox</span>
+                    <span>Local Demo Account</span>
                   </>
                 )}
               </div>
-              <p className="mt-0.5 opacity-70">User-isolated encryption active</p>
+              <p className="mt-0.5 opacity-70">Learning data is stored in this browser</p>
             </div>
 
             {/* User Profile Card & Sign Out */}

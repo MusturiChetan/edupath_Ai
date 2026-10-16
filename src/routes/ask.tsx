@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Send, Bot, Trash2, Sparkles, Cpu } from "lucide-react";
+import { Send, Bot, Trash2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AppShell, PageHeader, Panel } from "@/components/edu";
 import { useStore } from "@/lib/store";
 import { meta } from "@/lib/meta";
-import { guidanceReply, uid, weakTopics, matchCareers } from "@/lib/edupath";
+import { guidanceReply, uid } from "@/lib/edupath";
+import type { AcademicContext } from "@/lib/gemini";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ask")({
@@ -30,59 +31,12 @@ const SUGGESTED = [
   "What should I learn this week?",
 ];
 
-async function callGeminiIfConfigured(
-  q: string,
-  state: ReturnType<typeof useStore>["state"],
-): Promise<string | null> {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  if (!apiKey || apiKey.trim().length === 0) return null;
-
-  try {
-    const weak = weakTopics(state.subjects);
-    const topCareers = matchCareers(state.profile, state.subjects).slice(0, 3);
-    const context = `
-Student Profile: ${JSON.stringify(state.profile)}
-Diagnosed Weak Topics: ${JSON.stringify(weak)}
-Top Career Matches: ${JSON.stringify(topCareers.map((c) => ({ title: c.career.title, points: c.points })))}
-Active Roadmap Tasks: ${JSON.stringify(state.tasks.map((t) => ({ day: t.day, title: t.title, done: t.done })))}
-    `;
-
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `You are EduPath AI, an academic mentor for college students. Use this real student context to answer their question helpfully and concisely without making up false facts:\n${context}\n\nUser Question: ${q}`,
-                },
-              ],
-            },
-          ],
-        }),
-      },
-    );
-
-    if (res.ok) {
-      const data = await res.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (reply) return reply;
-    }
-  } catch (err) {
-    console.error("Gemini API call failed, falling back to rule-based engine:", err);
-  }
-  return null;
-}
-
 function Ask() {
   const { state, update } = useStore();
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [includeAcademicContext, setIncludeAcademicContext] = useState(false);
   const end = useRef<HTMLDivElement>(null);
-  const hasGemini = Boolean(import.meta.env.VITE_GEMINI_API_KEY);
 
   useEffect(() => {
     end.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -95,32 +49,91 @@ function Ask() {
     update((s) => ({ ...s, chat: [...s.chat, { id: uid(), role: "user", text: userText }] }));
     setLoading(true);
 
-    let reply = await callGeminiIfConfigured(userText, state);
-    if (!reply) {
-      reply = await guidanceReply(userText, state);
-    }
+    try {
+      const profile = state.profile;
+      const academicContext: AcademicContext = {
+        ...(profile
+          ? {
+              profile: {
+                course: profile.course,
+                branch: profile.branch,
+                year: profile.year,
+                interests: profile.interests,
+                strengths: profile.strengths,
+                career: profile.career,
+              },
+            }
+          : {}),
+        subjects: state.subjects.map((subject) => ({
+          name: subject.name,
+          topics: subject.topics.map((topic) => ({ name: topic.name, score: topic.score })),
+        })),
+        pendingTasks: state.tasks
+          .filter((task) => !task.done)
+          .slice(0, 8)
+          .map(({ day, title, minutes }) => ({ day, title, minutes })),
+      };
+      const response = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          question: userText,
+          includeAcademicContext,
+          academicContext: includeAcademicContext ? academicContext : undefined,
+        }),
+      });
+      const payload: unknown = await response.json().catch(() => undefined);
+      const data = payload as
+        | {
+            reply?: unknown;
+            error?: { code?: unknown; message?: unknown };
+          }
+        | undefined;
 
-    update((s) => ({ ...s, chat: [...s.chat, { id: uid(), role: "bot", text: reply! }] }));
-    setLoading(false);
+      if (response.ok && typeof data?.reply === "string" && data.reply.trim()) {
+        update((s) => ({
+          ...s,
+          chat: [...s.chat, { id: uid(), role: "bot", text: data.reply as string }],
+        }));
+        return;
+      }
+
+      const fallback = await guidanceReply(userText, state);
+      const note =
+        typeof data?.error?.message === "string"
+          ? data.error.message
+          : "Gemini could not answer, so this reply uses EduPath's built-in guidance.";
+      update((s) => ({
+        ...s,
+        chat: [...s.chat, { id: uid(), role: "bot", text: `${fallback}\n\nGemini: ${note}` }],
+      }));
+    } catch {
+      const fallback = await guidanceReply(userText, state);
+      update((s) => ({
+        ...s,
+        chat: [
+          ...s.chat,
+          {
+            id: uid(),
+            role: "bot",
+            text: `${fallback}\n\nGemini is unavailable, so this reply uses EduPath's built-in guidance.`,
+          },
+        ],
+      }));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <PageHeader
         title="Ask EduPath Assistant"
-        sub="Your personal academic guide grounded in your actual marks, weak topics, and 7-day roadmap."
+        sub="Ask Gemini for study and career guidance. EduPath's built-in guidance is available when Gemini is not configured."
         action={
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-              {hasGemini ? (
-                <>
-                  <Sparkles className="size-3 text-cyan" /> Gemini Live AI Connected
-                </>
-              ) : (
-                <>
-                  <Cpu className="size-3 text-primary" /> Rule-Based Grounded Engine
-                </>
-              )}
+              <Sparkles className="size-3 text-primary" /> Gemini AI when configured
             </span>
             {state.chat.length > 0 && (
               <Button
@@ -189,6 +202,23 @@ function Ask() {
         </div>
 
         <div className="border-t p-4 bg-card rounded-b-xl">
+          <div className="mb-4 rounded-lg border bg-secondary/30 p-3">
+            <label className="flex cursor-pointer items-start gap-2 text-sm font-medium">
+              <input
+                type="checkbox"
+                className="mt-0.5 accent-primary"
+                checked={includeAcademicContext}
+                onChange={(event) => setIncludeAcademicContext(event.target.checked)}
+              />
+              <span>Personalize answers with my saved study data</span>
+            </label>
+            <p className="mt-1 pl-6 text-xs leading-relaxed text-muted-foreground">
+              When Gemini is configured, your question is sent to Google. When checked, EduPath also
+              sends your course, branch, year, interests, strengths, career preference, topic
+              scores, and unfinished roadmap tasks. Your name, email, and login credentials are
+              excluded.
+            </p>
+          </div>
           <div className="mb-3 flex flex-wrap gap-2">
             {SUGGESTED.map((s) => (
               <button

@@ -9,8 +9,8 @@ export type SupabaseConfig = {
 };
 
 export function getSupabaseConfig(): SupabaseConfig | null {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const url = import.meta.env["VITE_SUPABASE_URL"];
+  const anonKey = import.meta.env["VITE_SUPABASE_ANON_KEY"];
   if (url && anonKey && url.trim().length > 0 && anonKey.trim().length > 0) {
     return { url: url.trim(), anonKey: anonKey.trim() };
   }

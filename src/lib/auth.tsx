@@ -411,25 +411,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resetPassword = async (email: string): Promise<{ success: boolean; message: string }> => {
     const cleanEmail = email.trim().toLowerCase();
 
-    if (isCloud) {
-      const config = getSupabaseConfig();
-      if (config) {
-        try {
-          await fetch(`${config.url}/auth/v1/recover`, {
-            method: "POST",
-            headers: {
-              apikey: config.anonKey,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: cleanEmail }),
-          });
-        } catch {
-          // ignore to prevent account enumeration
-        }
-      }
+    if (!isCloud) {
+      return {
+        success: false,
+        message:
+          "Local demo accounts cannot reset passwords. Sign in from the browser where the account was created, or create a new account.",
+      };
     }
 
-    // Always return safe, generic message to prevent email enumeration
+    const config = getSupabaseConfig();
+    if (!config) {
+      return {
+        success: false,
+        message: "The password recovery service is not configured. Try again later.",
+      };
+    }
+
+    try {
+      const response = await fetch(`${config.url}/auth/v1/recover`, {
+        method: "POST",
+        headers: {
+          apikey: config.anonKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: cleanEmail }),
+      });
+      if (!response.ok) {
+        return {
+          success: false,
+          message: "The password recovery service could not accept the request. Try again later.",
+        };
+      }
+    } catch {
+      return {
+        success: false,
+        message: "Could not reach the password recovery service. Try again later.",
+      };
+    }
+
+    // Keep the response generic so account existence is not disclosed.
     return {
       success: true,
       message: "If an account exists for this email, you will receive password reset instructions.",

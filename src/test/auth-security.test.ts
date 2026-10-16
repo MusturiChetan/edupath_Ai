@@ -7,6 +7,8 @@ import {
   generateTasks,
   DEMO_PROFILE,
   DEMO_SUBJECTS,
+  EMPTY_STATE,
+  guidanceReply,
   type Subject,
 } from "@/lib/edupath";
 
@@ -69,6 +71,31 @@ describe("EduPath Rule-Based Gap Analysis Engine", () => {
       expect(["High", "Medium", "Low"]).toContain(task.priority);
       expect(task.skill.length).toBeGreaterThan(0);
     });
+  });
+});
+
+describe("Rule-based study and career guidance", () => {
+  const state = {
+    ...EMPTY_STATE,
+    profile: DEMO_PROFILE,
+    subjects: DEMO_SUBJECTS,
+    tasks: generateTasks(DEMO_PROFILE, DEMO_SUBJECTS),
+  };
+
+  it("uses the student's lowest scored topics for improvement advice", async () => {
+    const reply = await guidanceReply("How can I improve my weak topics?", state);
+    expect(reply).toContain("Interrupts");
+    expect(reply).toContain("42%");
+  });
+
+  it("asks for onboarding before making a career match", async () => {
+    const reply = await guidanceReply("Which career fits me?", EMPTY_STATE);
+    expect(reply).toContain("Complete onboarding first");
+  });
+
+  it("returns a safe prompt when the question is outside supported topics", async () => {
+    const reply = await guidanceReply("Tell me a joke", EMPTY_STATE);
+    expect(reply).toContain("I can help with");
   });
 });
 

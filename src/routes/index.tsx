@@ -51,12 +51,12 @@ const FEATURES = [
   {
     icon: MessageCircle,
     title: "Ask EduPath Assistant",
-    body: "An intelligent guidance companion grounded in your actual profile, weak topics, and active roadmap.",
+    body: "Rule-based study and career guidance using your profile, weak topics, and active roadmap.",
   },
   {
     icon: ShieldCheck,
-    title: "Secure & private",
-    body: "Isolated student accounts, PBKDF2 cryptographic authentication, and optional Supabase PostgreSQL sync.",
+    title: "Account-based progress",
+    body: "Local accounts use PBKDF2 password hashing. Learning data stays in this browser; Supabase can provide authentication.",
   },
 ];
 
@@ -83,7 +83,9 @@ function Landing() {
           ) : (
             <div className="flex items-center gap-2">
               <Button asChild variant="ghost" size="sm">
-                <Link to="/login">Sign In</Link>
+                <Link to="/login" search={{}}>
+                  Sign In
+                </Link>
               </Button>
               <Button asChild size="sm">
                 <Link to="/register">Create Account</Link>
@@ -130,7 +132,9 @@ function Landing() {
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <Link to="/login">Sign In to Existing Account</Link>
+                    <Link to="/login" search={{}}>
+                      Sign In to Existing Account
+                    </Link>
                   </Button>
                 </>
               )}

@@ -26,9 +26,8 @@ export const Route = createFileRoute("/login")({
       "Sign In — EduPath AI",
       "Sign in to your EduPath AI account to access your learning gaps and study roadmap.",
     ),
-  validateSearch: (search: Record<string, unknown>) => ({
-    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>) =>
+    typeof search["redirect"] === "string" ? { redirect: search["redirect"] } : {},
   component: LoginPage,
 });
 
@@ -36,7 +35,7 @@ function LoginPage() {
   const { login, isCloudBackend } = useAuth();
   const navigate = useNavigate();
   const search = useSearch({ from: "/login" });
-  const redirectTarget = search.redirect || "/dashboard";
+  const redirectTarget = search["redirect"] || "/dashboard";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -114,8 +113,8 @@ function LoginPage() {
             <p className="mt-1 text-sm font-medium">InnoHacks 2.0 Demonstration Edition</p>
             <p className="mt-0.5 text-xs text-primary-foreground/70">
               {isCloudBackend
-                ? "Connected to Supabase PostgreSQL & Auth"
-                : "Running on Client Cryptographic Sandbox (WebCrypto PBKDF2)"}
+                ? "Supabase authentication; learning data stays in this browser"
+                : "Local demo account; learning data stays in this browser"}
             </p>
           </div>
         </div>
@@ -123,7 +122,7 @@ function LoginPage() {
         <div className="relative z-10 flex items-center justify-between text-xs text-primary-foreground/70 border-t border-primary-foreground/15 pt-6">
           <span>© 2026 EduPath AI</span>
           <span className="flex items-center gap-1.5">
-            <ShieldCheck className="size-4 text-cyan" /> End-to-end user isolation
+            <ShieldCheck className="size-4 text-cyan" /> Progress is separated by account
           </span>
         </div>
       </div>
@@ -208,19 +207,25 @@ function LoginPage() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 py-1">
-              <Checkbox
-                id="rememberMe"
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(!!checked)}
-              />
-              <Label
-                htmlFor="rememberMe"
-                className="text-xs font-normal text-muted-foreground cursor-pointer"
-              >
-                Remember this device for 30 days
-              </Label>
-            </div>
+            {isCloudBackend ? (
+              <p className="py-1 text-xs text-muted-foreground">
+                Session duration is managed by your account provider.
+              </p>
+            ) : (
+              <div className="flex items-center space-x-2 py-1">
+                <Checkbox
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(!!checked)}
+                />
+                <Label
+                  htmlFor="rememberMe"
+                  className="text-xs font-normal text-muted-foreground cursor-pointer"
+                >
+                  Remember this device for 30 days
+                </Label>
+              </div>
+            )}
 
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
